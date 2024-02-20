@@ -1,0 +1,53 @@
+<div class="flex">
+  <mat-card>
+    <mat-card-content>
+      <div class="w-full h-full flex flex-col">
+        <mat-form-field>
+          <mat-label>Nome do baralho</mat-label>
+          <input matInput required="true" type="text" [(ngModel)]="name_deck" />
+          @if (name_deck) {
+          <button
+            matSuffix
+            mat-icon-button
+            aria-label="Nome do baralho"
+            (click)="setName(name_deck)"
+          ></button>
+          }
+        </mat-form-field>
+
+        <button mat-raised-button class="w-3/4">
+          Adicionar cartas
+          <mat-icon
+            aria-hidden="false"
+            style="color: #000"
+            fontIcon="add"
+          ></mat-icon>
+        </button>
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <button
+        (click)="submit()"
+        type="submit"
+        mat-raised-button
+        class="m-1"
+        style="color: #000; background-color: #a1d7ff"
+      >
+        Adicionar Baralho
+      </button>
+      <button
+        mat-raised-button
+        class="m-1"
+        style="color: #000; background-color: #ff3e49"
+      >
+        Cancelar
+      </button>
+    </mat-card-actions>
+  </mat-card>
+
+  <div class="w-full fixed bottom-0 left-0 flex flex-row items-center overflow-y-auto">
+    @for (pokemon of pokemons?.data; track pokemon.id) {
+    <card-component [pokemon]="pokemon" [setDeck]="setDeck"/>
+    }
+  </div>
+</div>
