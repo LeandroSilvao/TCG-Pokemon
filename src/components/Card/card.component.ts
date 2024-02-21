@@ -6,16 +6,7 @@ import { Pokemon } from '../../types/pokemon.type';
   providers: [],
   templateUrl: './card.component.html',
 })
-export class CardComponent implements OnInit {
+export class CardComponent {
   @Input() pokemon: Pokemon | undefined;
-  @Input() setDeck: (pokemon: Pokemon) => void = () => {};
-
-  constructor() {}
   title = 'CARD POKEMON';
-
-  ngOnInit() {}
-
-  clickOnCard() {
-    if(this.pokemon) this.setDeck(this.pokemon);
-  }
 }

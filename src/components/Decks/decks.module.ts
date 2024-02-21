@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { FormDeckComponent } from './form-deck.component';
+import { DecksComponent } from './decks.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
@@ -11,8 +11,8 @@ import { CommonModule } from '@angular/common';
 import DecksService from '../../services/decks';
 
 @NgModule({
-  declarations: [FormDeckComponent],
-  exports: [FormDeckComponent],
+  declarations: [DecksComponent],
+  exports: [DecksComponent],
   providers: [DecksService],
   imports: [
     MatFormFieldModule,
@@ -25,4 +25,4 @@ import DecksService from '../../services/decks';
     CommonModule
   ],
 })
-export class FormDeckModule {}
+export class DecksModule {}

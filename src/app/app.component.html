@@ -18,6 +18,7 @@
             mat-raised-button
             class="m-1"
             style="background-color: #ff3e49"
+            (click)="changeView('decks')"
           >
             Meus Baralhos
           </button>
@@ -25,14 +26,19 @@
             mat-raised-button
             class="m-1"
             style="background-color: #a1d7ff"
+            (click)="changeView('form')"
           >
             Adicionar Baralho
           </button>
         </div>
-        <formdeck-component [pokemons]="pokemons" />
+        <ng-template [ngIf]="view === 'form'">
+          <formdeck-component class="h-2/5" [pokemons]="pokemons" />
+        </ng-template>
+        <ng-template [ngIf]="view === 'decks'">
+          <decks-component />
+        </ng-template>
       </div>
     </div>
-
   </div>
 </main>
 

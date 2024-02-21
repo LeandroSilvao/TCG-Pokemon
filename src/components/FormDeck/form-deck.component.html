@@ -1,53 +1,100 @@
-<div class="flex">
-  <mat-card>
-    <mat-card-content>
-      <div class="w-full h-full flex flex-col">
+<div class="min-w-full max-h-full flex">
+  <div class="flex flex-col w-full max-h-full" style="background-color: #fff">
+    <div class="w-full p-6" style="max-height: 80%">
+      <div class="max-w-full w-full h-full flex flex-col">
         <mat-form-field>
           <mat-label>Nome do baralho</mat-label>
           <input matInput required="true" type="text" [(ngModel)]="name_deck" />
-          @if (name_deck) {
-          <button
-            matSuffix
-            mat-icon-button
-            aria-label="Nome do baralho"
-            (click)="setName(name_deck)"
-          ></button>
-          }
         </mat-form-field>
 
-        <button mat-raised-button class="w-3/4">
-          Adicionar cartas
+        <div
+          class="w-full flex flex-col overflow-y-auto overflow-hidden"
+          style="height: 80%"
+        >
+          @for (pokemon of deck; track pokemon.id; let idx = $index) {
+          <div class="flex flex-row w-3/4">
+            <img
+              class="w-3/12 rounded-lg m-2"
+              src="{{ pokemon?.images?.small }}"
+            />
+            <div class="w-3/4 flex flex-col">
+              <span class="w-full text-blue-400">Nome: {{ pokemon.name }}</span>
+              <span class="w-full text-blue-400">HP: {{ pokemon.hp }}</span>
+              <span class="w-full text-blue-400"
+                >Artista: {{ pokemon.artist }}</span
+              >
+              <span class="w-full text-blue-400"
+                >Evolves From: {{ pokemon.evolvesFrom }}</span
+              >
+              <span class="w-full text-blue-400"
+                >Raridade: {{ pokemon.rarity }}</span
+              >
+              <span class="w-full text-blue-400"
+                >Super Type: {{ pokemon.supertype }}</span
+              >
+            </div>
+          </div>
+          }
+        </div>
+      </div>
+    </div>
+    <div class="flex flex-col w-full p-6" >
+      <div class="w-full flex flex-col">
+        <span class="w-full text-blue-800">{{ deck.length }} Carta(s)</span>
+        <span class="w-full text-blue-800"
+          >{{ getLengthSuperType() }} Cartas de Treinador</span
+        >
+      </div>
+      <div class="w-full">
+        <button
+          [disabled]="deck.length < 24 || deck.length > 59"
+          (click)="submit()"
+          type="submit"
+          mat-raised-button
+          class="m-1"
+          style="color: #000; background-color: #a1d7ff"
+        >
+          Adicionar Baralho
+        </button>
+        <button
+          mat-raised-button
+          class="m-1"
+          style="color: #000; background-color: #ff3e49"
+        >
+          Cancelar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div
+    (wheel)="onWheel($event)"
+    id="scroll"
+    class="w-full fixed bottom-0 left-0 flex flex-row items-center overflow-x-auto whitespace-nowrap"
+  >
+    @for (pokemon of pokemons?.data; track pokemon.id) {
+    <div class="flex flex-col">
+      <div class="flex items-center justify-center">
+        <button>
           <mat-icon
+            [hidden]="deck.length > 59"
+            (click)="setDeck(pokemon, true)"
             aria-hidden="false"
-            style="color: #000"
+            style="color: #fff; cursor: pointer"
             fontIcon="add"
           ></mat-icon>
         </button>
+        <button [hidden]="disableRemoveButton(pokemon)">
+          <mat-icon
+            (click)="setDeck(pokemon, false)"
+            aria-hidden="false"
+            style="color: #fd0000; cursor: pointer"
+            fontIcon="delete"
+          ></mat-icon>
+        </button>
       </div>
-    </mat-card-content>
-    <mat-card-actions>
-      <button
-        (click)="submit()"
-        type="submit"
-        mat-raised-button
-        class="m-1"
-        style="color: #000; background-color: #a1d7ff"
-      >
-        Adicionar Baralho
-      </button>
-      <button
-        mat-raised-button
-        class="m-1"
-        style="color: #000; background-color: #ff3e49"
-      >
-        Cancelar
-      </button>
-    </mat-card-actions>
-  </mat-card>
-
-  <div class="w-full fixed bottom-0 left-0 flex flex-row items-center overflow-y-auto">
-    @for (pokemon of pokemons?.data; track pokemon.id) {
-    <card-component [pokemon]="pokemon" [setDeck]="setDeck"/>
+      <card-component [pokemon]="pokemon" />
+    </div>
     }
   </div>
 </div>

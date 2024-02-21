@@ -1,39 +1,55 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { Pokemon, PokemonResponse } from '../../types/pokemon.type';
-
+import DecksService from '../../services/decks';
 @Component({
   selector: 'formdeck-component',
-  providers: [],
   templateUrl: './form-deck.component.html',
 })
-export class FormDeckComponent implements OnInit {
+export class FormDeckComponent {
   @Input() pokemons: PokemonResponse | undefined;
+  @Input() name_deck: string = '';
+  @Input() deck: Array<Pokemon> = [];
 
-  title = 'FORMULARIO DECK';
-  public name_deck: string;
-  public deck: Pokemon[];
+  constructor(private deckService: DecksService) {}
 
-  constructor() {
+  public setDeck(pokemon: Pokemon | undefined, include: boolean) {
+    if (!pokemon) return pokemon;
+    if (include) {
+      if (Array.isArray(this.deck)) this.deck.push(pokemon);
+      else this.deck = [{ ...pokemon }];
+    } else {
+      const index = this.deck.findIndex((pk) => pk.id === pokemon.id);
+      if (index !== -1) this.deck.splice(index, 1);
+    }
+    return pokemon;
+  }
+
+  disableRemoveButton(pokemon: Pokemon) {
+    return this.deck.findIndex((pk) => pk.id === pokemon.id) !== -1
+      ? false
+      : true;
+  }
+
+  public submit() {
+    this.deckService.setDecks({ name: this.name_deck, pokemons: this.deck });
+    this.clearState();
+  }
+
+  private clearState() {
     this.name_deck = '';
     this.deck = [];
   }
-  ngOnInit() {
-    console.log("RENDERIZOU")
+
+  onWheel(event: WheelEvent): void {
+    if (event.deltaY > 0) document.getElementById('scroll')!.scrollLeft += 40;
+    else document.getElementById('scroll')!.scrollLeft -= 40;
   }
 
-  setName(name: string) {
-    this.name_deck = name;
+  getLengthSuperType() {
+    return this.deck.filter((pokemon) => pokemon.supertype).length;
   }
 
-  setDeck(pokemon: Pokemon) {
-    console.log('PUSH');
-    
-    // console.log(this.deck)
-    // this.deck.push(pokemon);
-  }
-
-  submit() {
-    console.log(this.deck);
-    console.log(this.name_deck);
+  getLengthUniqueType() {
+    return this.deck.filter((pokemon) => pokemon.types).length;
   }
 }
