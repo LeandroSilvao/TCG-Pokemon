@@ -9,6 +9,8 @@ import {MatCardModule} from '@angular/material/card';
 import { CardModule } from '../Card/card.module';
 import { CommonModule } from '@angular/common';
 import DecksService from '../../services/decks';
+import { NgOptimizedImage } from '@angular/common';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [FormDeckComponent],
@@ -22,7 +24,9 @@ import DecksService from '../../services/decks';
     MatIconModule,
     MatCardModule,
     CardModule,
-    CommonModule
+    CommonModule,
+    NgOptimizedImage,
+    MatProgressSpinnerModule
   ],
 })
 export class FormDeckModule {}

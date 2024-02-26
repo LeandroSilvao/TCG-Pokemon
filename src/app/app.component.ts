@@ -4,10 +4,11 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import PokemonService from '../services/pokemon';
-import { PokemonResponse } from '../types/pokemon.type';
+import { Pokemon, PokemonResponse } from '../types/pokemon.type';
 import { FormDeckModule } from '../components/FormDeck/form-deck.module';
 import { CommonModule } from '@angular/common';
 import { DecksModule } from '../components/Decks/decks.module';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'root',
@@ -20,32 +21,23 @@ import { DecksModule } from '../components/Decks/decks.module';
     FormDeckModule,
     DecksModule,
     CommonModule,
+    MatIconModule
   ],
   providers: [PokemonService],
   templateUrl: './app.component.html',
 })
 export class AppComponent implements OnInit {
-  pokemons: PokemonResponse | undefined;
-
-  view: 'form' | 'decks' | undefined = 'decks';
+  pokemons: Pokemon[] | undefined;
+  public view: 'form' | 'decks' | undefined = 'decks';
   constructor(private pokemon: PokemonService) {}
 
-  getCards = async () => {
-    const fromSessionStorage = sessionStorage.getItem('pokemons');
-    if (fromSessionStorage !== null) {
-      this.pokemons = JSON.parse(fromSessionStorage);
-    } else {
-      const cards = await this.pokemon.getCards();
-      sessionStorage.setItem('pokemons', JSON.stringify(cards.data));
-      this.pokemons = cards.data;
-    }
-  };
-
-  ngOnInit() {
-    this.getCards();
+  async ngOnInit() {
+    this.pokemon.getCards().then((res) => {
+      this.pokemons = res;
+    });
   }
 
-  changeView(view: 'form' | 'decks') {
+  public appChangeView(view: 'form' | 'decks') {
     this.view = view;
   }
 }

@@ -1,79 +1,98 @@
-<div class="min-w-full max-h-full flex">
-  <div class="flex flex-col w-full max-h-full" style="background-color: #fff">
-    <div class="w-full p-6" style="max-height: 80%">
-      <div class="max-w-full w-full h-full flex flex-col">
-        <mat-form-field>
-          <mat-label>Nome do baralho</mat-label>
-          <input matInput required="true" type="text" [(ngModel)]="name_deck" />
-        </mat-form-field>
+<div
+  class="w-11/12 h-full flex flex-col items-center justify-evenly overflow-y-hidden"
+>
+  <div
+    class="flex flex-col items-center justify-evenly max-h-[60%] min-h-[30%] overflow-y-hidden"
+    style="background-color: #fff"
+  >
+    <div
+      class="w-full flex flex-col items-center justify-evenly p-2 max-h-[50%] overflow-y-hidden"
+    >
+      <mat-form-field class="w-full">
+        <mat-label>Nome do baralho</mat-label>
+        <input matInput required="true" type="text" [(ngModel)]="name_deck" />
+        <mat-hint class="text-red-700" *ngIf="name_deck === ''" align="start"
+          ><strong>Preencha o nome</strong>
+        </mat-hint>
+      </mat-form-field>
 
-        <div
-          class="w-full flex flex-col overflow-y-auto overflow-hidden"
-          style="height: 80%"
-        >
-          @for (pokemon of deck; track pokemon.id; let idx = $index) {
-          <div class="flex flex-row w-3/4">
-            <img
-              class="w-3/12 rounded-lg m-2"
-              src="{{ pokemon?.images?.small }}"
-            />
-            <div class="w-3/4 flex flex-col">
-              <span class="w-full text-blue-400">Nome: {{ pokemon.name }}</span>
-              <span class="w-full text-blue-400">HP: {{ pokemon.hp }}</span>
-              <span class="w-full text-blue-400"
-                >Artista: {{ pokemon.artist }}</span
-              >
-              <span class="w-full text-blue-400"
-                >Evolves From: {{ pokemon.evolvesFrom }}</span
-              >
-              <span class="w-full text-blue-400"
-                >Raridade: {{ pokemon.rarity }}</span
-              >
-              <span class="w-full text-blue-400"
-                >Super Type: {{ pokemon.supertype }}</span
-              >
-            </div>
+      <div class="w-full max-h-[80%] flex flex-col overflow-y-auto">
+        @for (pokemon of deck; track pokemon.id; let idx = $index) {
+        <div class="flex flex-row items-center justify-start">
+          <img
+            class="rounded-lg m-2"
+            ngSrc="{{ pokemon?.images?.small }}"
+            [width]="79"
+            [height]="110"
+          />
+          <div class="flex flex-col">
+            <span class="w-full text-blue-800"
+              ><strong>Nome:</strong> {{ pokemon.name }}</span
+            >
+            <span class="w-full text-blue-800"
+              ><strong>HP:</strong> {{ pokemon.hp }}</span
+            >
+            <span class="w-full text-blue-800"
+              ><strong>Artista:</strong> {{ pokemon.artist }}</span
+            >
+            <span class="w-full text-blue-800"
+              ><strong>Evolves From:</strong> {{ pokemon.evolvesFrom }}</span
+            >
+            <span class="w-full text-blue-800"
+              ><strong>Raridade: </strong>{{ pokemon.rarity }}</span
+            >
           </div>
+        </div>
+        }
+      </div>
+    </div>
+
+    <div class="flex flex-col w-full p-4 max-h-[50%]">
+      <div class="w-full h-[85%] flex flex-col">
+        <div class="w-full h-[80%] flex flex-row flex-wrap">
+          @for (type of getLengthSuperType(); track $index) {
+          <span class="text-blue-800">
+            <strong>{{ type.key }}:</strong> {{ type.value }}&nbsp;|&nbsp;
+          </span>
           }
         </div>
       </div>
-    </div>
-    <div class="flex flex-col w-full p-6" >
-      <div class="w-full flex flex-col">
-        <span class="w-full text-blue-800">{{ deck.length }} Carta(s)</span>
-        <span class="w-full text-blue-800"
-          >{{ getLengthSuperType() }} Cartas de Treinador</span
-        >
-      </div>
-      <div class="w-full">
+      <div class="w-full flex flex-row mt-2 items-center justify-center">
         <button
-          [disabled]="deck.length < 24 || deck.length > 59"
+          [disabled]="
+            deck.length < 24 || deck.length >= 59 || name_deck.length === 0
+          "
           (click)="submit()"
           type="submit"
           mat-raised-button
           class="m-1"
           style="color: #000; background-color: #a1d7ff"
         >
-          Adicionar Baralho
+          {{ viewMode === "create" ? "Adicionar" : "Salvar" }}
         </button>
         <button
+          (click)="clearState()"
           mat-raised-button
           class="m-1"
           style="color: #000; background-color: #ff3e49"
         >
           Cancelar
         </button>
+        <span class="w-full text-blue-800"
+          >{{ deck.length }} {{ deck.length === 1 ? "Carta" : "Cartas" }}</span
+        >
       </div>
     </div>
   </div>
 
   <div
+    *ngIf="checkArrayLength(pokemons) > 0; else loading"
     (wheel)="onWheel($event)"
     id="scroll"
-    class="w-full fixed bottom-0 left-0 flex flex-row items-center overflow-x-auto whitespace-nowrap"
+    class="w-full flex flex-row items-center overflow-x-auto whitespace-nowrap max-h-[50%]"
   >
-    @for (pokemon of pokemons?.data; track pokemon.id) {
-    <div class="flex flex-col">
+    @for (pokemon of pokemons; track pokemon.id) {
+    <div class="flex flex-col h-full">
       <div class="flex items-center justify-center">
         <button>
           <mat-icon
@@ -93,8 +112,18 @@
           ></mat-icon>
         </button>
       </div>
-      <card-component [pokemon]="pokemon" />
+      <div class="min-w-36">
+        <img
+          ngSrc="{{ pokemon?.images?.large }}"
+          [width]="136"
+          [height]="187"
+        />
+      </div>
     </div>
     }
   </div>
+  <ng-template #loading>
+    <span>Carregando Pokemons...</span>
+    <mat-spinner></mat-spinner>
+  </ng-template>
 </div>

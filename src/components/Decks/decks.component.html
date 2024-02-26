@@ -1,54 +1,77 @@
 <style>
-  .deckBackground {
-    background-image: url("../../assets/fundo-baralho.jpg");
-    background-size: 100%;
-    background-size: cover;
+  .background-color {
+    background-color: #000000b4;
   }
 </style>
 
-<div class="min-w-full flex">
-  @for (deck of decks; track $index) {
-  <mat-card-content class="w-3/12 m-2">
-    <mat-card-header class="flex flex-row items-center justify-center">
-      <mat-card-title>{{ deck.name }}</mat-card-title>
-    </mat-card-header>
-    <mat-card-content class="w-full">
-      <img src="../../assets/fundo-baralho.jpg" alt="" class="w-full" />
-    </mat-card-content>
-  </mat-card-content>
-  }
-</div>
-
-<!-- <mat-card class="w-full">
-  <mat-card-content class="w-full">
-    <div class="max-w-full w-full h-full flex flex-col">
-      <mat-form-field>
-        <mat-label>Nome do baralho</mat-label>
-        <input matInput required="true" type="text" [(ngModel)]="name_deck" />
-      </mat-form-field>
-
-      <div class="w-full max-w-full flex flex-row flex-wrap">
-  
-      </div>
+<div class="w-full h-full">
+  <ng-template [ngIf]="deck !== undefined">
+    <div class="w-full h-full">
+      <formdeck-component
+        class="w-full h-full flex items-center justify-center"
+        [name_deck]="deck.name"
+        [deck]="deck.pokemons"
+        [id]="deck.id"
+        [pokemons]="pokemons"
+        viewMode="edit"
+        (view)="DeckChangeView($event)"
+      />
     </div>
-  </mat-card-content>
-  <mat-card-actions class="w-full">
-    <button
-      [disabled]="deck.length < 24 || deck.length > 59"
-      (click)="submit()"
-      type="submit"
-      mat-raised-button
-      class="m-1"
-      style="color: #000; background-color: #a1d7ff"
+  </ng-template>
+
+  <ng-template [ngIf]="deck === undefined">
+    <div
+      class="flex flex-row flex-wrap w-full h-full overflow-y-auto whitespace-nowrap items-center justify-center"
     >
-      Adicionar Baralho
-    </button>
-    <button
-      mat-raised-button
-      class="m-1"
-      style="color: #000; background-color: #ff3e49"
-    >
-      Cancelar
-    </button>
-  </mat-card-actions>
-</mat-card> -->
+      @for (deck of decks; track $index) {
+      <mat-card class="relative m-2 grow max-w-60">
+        <img
+          mat-card-image
+          src="../../assets/fundo-baralho.jpg"
+          class="absolute"
+        />
+        <div
+          class="background-color flex w-full h-full items-center justify-center flex-col absolute"
+        >
+          <span class="w-11/12 text-center font-medium text-lg text-wrap">{{
+            deck.name.toUpperCase()
+          }}</span>
+          <div class="flex">
+            <button (click)="selectDeck(deck)">
+              <mat-icon
+                aria-hidden="false"
+                style="color: #fff; cursor: pointer"
+                fontIcon="edit"
+              ></mat-icon>
+            </button>
+            <button (click)="deleteDeck(deck)">
+              <mat-icon
+                color="#fff"
+                aria-hidden="false"
+                style="color: #fd0000; cursor: pointer"
+                fontIcon="delete"
+              ></mat-icon>
+            </button>
+          </div>
+
+          <hr class="m-2 w-1/2 border-1" />
+
+          <div class="flex flex-col flex-wrap">
+            @for (type of getLengthSuperType(deck); track $index) {
+            <span class="text-white text-center">
+              <strong>{{ type.key }}:</strong> {{ type.value }}
+            </span>
+            }
+          </div>
+          <hr class="m-2 w-1/2 border-1" />
+
+          <span class="text-white"
+            ><strong>{{ deck.pokemons.length }} </strong>
+            {{ deck.pokemons.length === 1 ? "Carta" : "Cartas" }}</span
+          >
+        </div>
+      </mat-card>
+      }
+    </div>
+  </ng-template>
+</div>
