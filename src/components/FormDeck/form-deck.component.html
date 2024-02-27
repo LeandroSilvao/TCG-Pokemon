@@ -1,3 +1,9 @@
+<style>
+    .background-color {
+    background-color: #000000b4;
+  }
+</style>
+
 <div
   class="w-11/12 h-full flex flex-col items-center justify-evenly overflow-y-hidden"
 >
@@ -112,12 +118,18 @@
           ></mat-icon>
         </button>
       </div>
-      <div class="min-w-36">
+      <div class="min-w-36 relative">
         <img
           ngSrc="{{ pokemon?.images?.large }}"
           [width]="136"
           [height]="187"
         />
+        <div *ngIf="!disableRemoveButton(pokemon)"  class="flex items-center justify-center absolute top-0 w-full h-full background-color ">
+          <mat-icon
+          aria-hidden="false"
+          style="color: #fff;"
+          fontIcon="check"
+        ></mat-icon></div>
       </div>
     </div>
     }

@@ -15,7 +15,7 @@ export default class PokemonService {
     this.headers = { 'X-Api-Key': this.api_key };
   }
 
-  private get = (page = 1, pageSize = 50) => {
+  private get = (page = 1, pageSize = 250) => {
     return axios.get<PokemonResponse>(
       `${this.url}cards?page=${page}&pageSize=${pageSize}`,
       {
