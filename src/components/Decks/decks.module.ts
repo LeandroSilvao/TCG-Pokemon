@@ -6,7 +6,6 @@ import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
-import { CardModule } from '../Card/card.module';
 import { CommonModule } from '@angular/common';
 import DecksService from '../../services/decks';
 import { FormDeckModule } from '../FormDeck/form-deck.module';
@@ -23,7 +22,6 @@ import PokemonService from '../../services/pokemon';
     MatButtonModule,
     MatIconModule,
     MatCardModule,
-    CardModule,
     CommonModule,
     FormDeckModule,
   ],

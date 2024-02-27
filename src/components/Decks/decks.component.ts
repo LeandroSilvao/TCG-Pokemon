@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import DecksService from '../../services/decks';
 import { Deck } from '../../types/decks.type';
 import PokemonService from '../../services/pokemon';
-import { Pokemon, PokemonResponse } from '../../types/pokemon.type';
+import { Pokemon } from '../../types/pokemon.type';
 import { Output, EventEmitter } from '@angular/core';
 import _ from 'lodash';
 

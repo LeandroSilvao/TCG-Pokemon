@@ -6,7 +6,6 @@ import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import {MatCardModule} from '@angular/material/card';
-import { CardModule } from '../Card/card.module';
 import { CommonModule } from '@angular/common';
 import DecksService from '../../services/decks';
 import { NgOptimizedImage } from '@angular/common';
@@ -23,7 +22,6 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     MatButtonModule,
     MatIconModule,
     MatCardModule,
-    CardModule,
     CommonModule,
     NgOptimizedImage,
     MatProgressSpinnerModule
